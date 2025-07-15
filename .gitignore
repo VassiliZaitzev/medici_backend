@@ -1,41 +1,67 @@
-# Prerequisites
-*.d
+##########################################################
+# Archivos y carpetas comunes de Visual Studio/.NET Core #
+##########################################################
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# IDE y entorno
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.psess
+*.vsp
 
-# Precompiled Headers
-*.gch
-*.pch
+# Archivos de compilación
+bin/
+obj/
+Generated_Code/
 
-# Linker files
-*.ilk
+# Archivos de caché de NuGet y build
+*.nuget.props
+*.nuget.targets
+*.cache
+*.csproj.nuget.dgspec.json
+*.csproj.FileListAbsolute.txt
+*.GeneratedMSBuildEditorConfig.editorconfig
+project.lock.json
+project.fragment.lock.json
 
-# Debugger Files
+# Archivos de enlace de símbolos
 *.pdb
+*.mdb
+*.sbr
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Archivos de configuración de depuración y perfilado
+*.vssscc
+*.vspscc
+*.dbmdl
+*.sdf
+*.cachefile
+*.orig
+*.tlog
+*.log
 
-# Fortran module files
-*.mod
-*.smod
+# Archivos de herramientas de Visual Studio
+*.vsidx
+*.VC.db
+*.VC.opendb
+*.ncb
+*.opensdf
+*.sdf
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Archivos de análisis estático
+*.codeanalysis
 
-# Executables
-*.exe
-*.out
-*.app
+# Otros archivos temporales
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+*.sourcelink.json
 
-# debug information files
-*.dwo
+# Archivos generados por Rider/ReSharper (si usas JetBrains)
+.idea/
+*.dotCover
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
