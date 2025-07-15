@@ -1,0 +1,11 @@
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\bin\Debug\net8.0\00_Entities.deps.json
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\bin\Debug\net8.0\00_Entities.dll
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\bin\Debug\net8.0\00_Entities.pdb
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.AssemblyInfoInputs.cache
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.AssemblyInfo.cs
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.csproj.CoreCompileInputs.cache
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.dll
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\refint\00_Entities.dll
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\00_Entities.pdb
+C:\Users\pchome.chile\source\repos\Medici\00_Entities\obj\Debug\net8.0\ref\00_Entities.dll

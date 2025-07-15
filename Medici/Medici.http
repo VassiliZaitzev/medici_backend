@@ -1,0 +1,6 @@
+@Medici_HostAddress = http://localhost:5047
+
+GET {{Medici_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

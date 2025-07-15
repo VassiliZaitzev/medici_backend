@@ -1,0 +1,15 @@
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\bin\Debug\net8.0\01_DataLogic.deps.json
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\bin\Debug\net8.0\01_DataLogic.dll
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\bin\Debug\net8.0\01_DataLogic.pdb
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\bin\Debug\net8.0\00_Entities.dll
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\bin\Debug\net8.0\00_Entities.pdb
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.csproj.AssemblyReference.cache
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.AssemblyInfoInputs.cache
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.AssemblyInfo.cs
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.csproj.CoreCompileInputs.cache
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataL.92BD258B.Up2Date
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.dll
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\refint\01_DataLogic.dll
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\01_DataLogic.pdb
+C:\Users\pchome.chile\source\repos\Medici\01_DataLogic\obj\Debug\net8.0\ref\01_DataLogic.dll
