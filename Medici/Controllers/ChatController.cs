@@ -15,16 +15,10 @@ namespace Medici.Controllers
             _chatBL = chatBL;
         }
 
-        [HttpGet("buscarCita")]
+        [HttpGet("ListarChat")]
         public Task<List<ChatEN>> ListarChat()
         {
             return _chatBL.ListarChat();
         }
-
-        //[HttpPost("guardarConsultaAbreviada")]
-        //public UtilsEN guardarConsultaAbreviada([FromBody] CitaEN request)
-        //{
-        //    return _citaBL.guardarConsultaAbreviada(request);
-        //}
     }
 }
