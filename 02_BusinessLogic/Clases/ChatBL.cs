@@ -11,10 +11,10 @@ namespace _02_BusinessLogic.Clases
 {
     public class ChatBL : IChatBL
     {
-        public async Task<List<ChatEN>> ListarChat()
+        public async Task<List<ChatEN>> ListarChat(string codigo)
         {
             ChatDal oChatDal = new ChatDal();
-            return await oChatDal.listarChat();
+            return await oChatDal.ListarChat(codigo);
         }
     }
 }

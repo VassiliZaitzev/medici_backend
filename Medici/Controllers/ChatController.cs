@@ -15,10 +15,10 @@ namespace Medici.Controllers
             _chatBL = chatBL;
         }
 
-        [HttpGet("ListarChat")]
-        public Task<List<ChatEN>> ListarChat()
+        [HttpGet("ListarChat/{codigo}")]
+        public Task<List<ChatEN>> ListarChat(string codigo)
         {
-            return _chatBL.ListarChat();
+            return _chatBL.ListarChat(codigo);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using _00_Entities;
 using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -12,36 +13,36 @@ namespace _01_DataLogic.Clases
 {
     public class ChatDal
     {
-        public async Task<List<ChatEN>> listarChat()
+        public async Task<List<ChatEN>> ListarChat(string codigo)
         {
+            List<ChatEN> chat = [];
             var config = new ConfigurationBuilder()
              .AddJsonFile("appsettings.json")
              .Build();
-            
-            List<ChatEN> chat = [];
 
             try
             {
+                using var connection = new MySqlConnection(config["ConnectionStrings:medicyMySql"]);
+                await connection.OpenAsync();
 
-                using var conn = new NpgsqlConnection(config["ConnectionStrings:PgSqlTEST"]);
-                await conn.OpenAsync();
+                using var command = new MySqlCommand("LISTAR_CHAT", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@pCODIGO_CLIENTE", codigo);
 
-
-                using var cmd = new NpgsqlCommand("SELECT * FROM medici.obtener_chat()", conn);
-                using var reader = await cmd.ExecuteReaderAsync();
+                using var reader = await command.ExecuteReaderAsync();
 
                 chat = new List<ChatEN>();
                 ChatEN obj;
                 while (await reader.ReadAsync())
                 {
                     obj = new ChatEN();
-                    obj.idChat = reader.GetInt32(0);
-                    obj.codigoCliente = reader.GetInt32(1);
-                    obj.mensaje = reader.GetString(2);
-                    obj.responsable = reader.GetString(3);
+                    obj.idChat = reader.IsDBNull("ID_CHAT") ? 0 : reader.GetInt32("ID_CHAT");
+                    obj.codigoCliente = reader.IsDBNull("CODIGO_CLIENTE") ? null : reader.GetString("CODIGO_CLIENTE");
+                    obj.mensaje = reader.IsDBNull("MENSAJE") ? null : reader.GetString("MENSAJE");
+                    obj.idTipoMensaje = reader.IsDBNull("ID_TIPO_MENSAJE") ? null : reader.GetInt32("ID_TIPO_MENSAJE");
+                    obj.fecha = reader.IsDBNull("FECHA") ? null : reader.GetDateTime("FECHA");
                     chat.Add(obj);
-                }                                                                                
-
+                }
             }
             catch (Exception ex)
             {
