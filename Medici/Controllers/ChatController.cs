@@ -20,5 +20,12 @@ namespace Medici.Controllers
         {
             return _chatBL.ListarChat(codigo);
         }
+
+
+        [HttpPost("AgregarChat")]
+        public Task<int> AgregarChat([FromBody] ChatEN chat)
+        {
+            return _chatBL.AgregarChat(chat);            
+        }
     }
 }

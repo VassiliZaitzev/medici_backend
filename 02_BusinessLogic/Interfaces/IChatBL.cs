@@ -10,5 +10,6 @@ namespace _02_BusinessLogic.Interfaces
     public interface IChatBL
     {
         public Task<List<ChatEN>> ListarChat(string codigo);
+        public Task<int> AgregarChat(ChatEN chat);
     }
 }

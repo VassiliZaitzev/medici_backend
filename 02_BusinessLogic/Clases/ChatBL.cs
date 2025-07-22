@@ -16,5 +16,11 @@ namespace _02_BusinessLogic.Clases
             ChatDal oChatDal = new ChatDal();
             return await oChatDal.ListarChat(codigo);
         }
+
+        public async Task<int> AgregarChat(ChatEN chat)
+        {
+            ChatDal oChatDal = new ChatDal();
+            return await oChatDal.AgregarChat(chat);
+        }
     }
 }

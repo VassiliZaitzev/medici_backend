@@ -68,5 +68,53 @@ namespace _01_DataLogic.Clases
         //    await cmd.ExecuteNonQueryAsync();
         //    return Ok(new { message = "Insertado correctamente" });
         //}
+
+
+        public async Task<int> AgregarChat(ChatEN chat)
+        {
+            int result = 0;
+            var config = new ConfigurationBuilder()
+             .AddJsonFile("appsettings.json")
+             .Build();
+
+            try
+            {
+
+
+                using var connection = new MySqlConnection(config["ConnectionStrings:medicyMySql"]);
+                await connection.OpenAsync(); 
+
+                using var command = new MySqlCommand("INSERTAR_CHAT", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+
+                command.Parameters.Add(new MySqlParameter("p_CODIGO_CLIENTE", chat.codigoCliente));
+                command.Parameters.Add(new MySqlParameter("p_MENSAJE", chat.mensaje));
+                command.Parameters.Add(new MySqlParameter("p_ID_TIPO_MENSAJE", chat.idTipoMensaje));
+                command.Parameters.Add(new MySqlParameter("p_FECHA", chat.fecha));
+
+
+                var outputParam = new MySqlParameter("p_ID_CHAT", MySqlDbType.Int64)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(outputParam);
+
+   
+                await command.ExecuteNonQueryAsync();
+
+
+                var idChat = Convert.ToInt64(outputParam.Value);
+                result = (int)idChat;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error :" + ex);
+
+            }
+
+            return result;
+        }
     }
 }
