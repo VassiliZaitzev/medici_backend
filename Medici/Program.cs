@@ -24,6 +24,7 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
     });
 
 builder.Services.AddScoped<IChatBL, ChatBL>();
+builder.Services.AddScoped<IContactBL, ContactBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
