@@ -1,5 +1,6 @@
 using _02_BusinessLogic.Clases;
 using _02_BusinessLogic.Interfaces;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 builder.Services.AddScoped<IChatBL, ChatBL>();
 builder.Services.AddScoped<IContactBL, ContactBL>();
 
+builder.Services.AddScoped<IPdfBL, PdfBL>();
+QuestPDF.Settings.License = LicenseType.Community;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
