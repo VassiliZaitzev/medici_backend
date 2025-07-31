@@ -28,11 +28,7 @@ namespace _01_DataLogic.Clases
 
                     page.Header().Element(ComposeHeader);
                     page.Content().Element(ComposeContent);
-                    page.Footer().AlignCenter().Text(txt =>
-                    {
-                        txt.Span("Medicy© - Cuidamos tu salud · ").FontSize(10).Italic();
-                        txt.Span(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
-                    });
+                    page.Footer().Element(ComposeFooter);
 
      
                 });
@@ -44,7 +40,7 @@ namespace _01_DataLogic.Clases
             return Convert.ToBase64String(stream.ToArray());
         }
 
-        public string Titulo { get; set; } = "Órden de exámenes complementarios";
+        public string Titulo { get; set; } = "Órden de exámenes";
         public string Fecha { get; set; } = DateTime.Now.ToString("dd/MM/yyyy");
         public string Contenido { get; set; } = "Aquí va el contenido principal del documento.";
         public byte[]? LogoBytes { get; set; } = null;
@@ -52,12 +48,10 @@ namespace _01_DataLogic.Clases
         void ComposeHeader(IContainer container)
         {
             string basePath = AppContext.BaseDirectory;
-
-            // Subir dos niveles: de bin\Debug\net8.0 a la raíz del proyecto
             string proyectoRaiz = Path.GetFullPath(Path.Combine(basePath, "..", "..", ".."));
 
             // Construir ruta a Assets
-            string logoPath = Path.Combine(proyectoRaiz, "Assets", "medici1.png");
+            string logoPath = Path.Combine(proyectoRaiz, "Assets", "medici1.png");            
 
             if (!File.Exists(logoPath))
                 throw new FileNotFoundException($"No se encontró la imagen en: {logoPath}");
@@ -67,7 +61,7 @@ namespace _01_DataLogic.Clases
             container.Row(row =>
             {
                 // Columna 1: Imagen o ícono
-                row.RelativeColumn(2).Height(50).AlignMiddle().AlignLeft().Element(col =>
+                row.RelativeItem(3).Height(50).AlignMiddle().AlignLeft().Element(col =>
                 {
                     if (LogoBytes != null)
                         col.Image(LogoBytes);
@@ -76,15 +70,15 @@ namespace _01_DataLogic.Clases
                 });
 
                 // Columna 2: Título
-                row.RelativeColumn(8).AlignCenter().AlignMiddle().Text(Titulo)
+                row.RelativeItem(6).AlignCenter().AlignMiddle().Text(Titulo)
                     .FontSize(16).SemiBold().FontColor(Colors.Black);
 
                 // Columna 3: Fecha
                 //row.RelativeColumn(3).AlignRight().AlignMiddle().Text($"Fecha: {Fecha}").FontSize(12).FontColor(Colors.Grey.Darken2);
-                row.RelativeColumn(2).Column(col =>
+                row.RelativeItem(3).Column(col =>
                 {
                     col.Item().Text("Folio: 99cc11a5").FontSize(10).FontColor(Colors.Grey.Darken2);
-                    col.Item().Text("Fecha: "+ Fecha).FontSize(10).FontColor(Colors.Grey.Darken2);
+                    //col.Item().Text("Fecha: "+ Fecha).FontSize(10).FontColor(Colors.Grey.Darken2);
                 });
             });
         }
@@ -110,6 +104,63 @@ namespace _01_DataLogic.Clases
                 col.Spacing(10);
                 col.Item().Text("Contenido");
             });
+        }
+
+        public void ComposeFooter(IContainer container)
+        {
+            string basePath = AppContext.BaseDirectory;
+            string proyectoRaiz = Path.GetFullPath(Path.Combine(basePath, "..", "..", ".."));
+            string signPath = Path.Combine(proyectoRaiz, "Assets", "signature2.png");
+
+            if (!File.Exists(signPath))
+                throw new FileNotFoundException($"No se encontró la imagen en: {signPath}");
+
+            byte[] LogoBytes = File.ReadAllBytes(signPath);
+
+            container.Column(column =>
+            {
+                column.Item().Row(row =>
+                {
+                    row.RelativeItem(0.6f).AlignMiddle().Column(col =>
+                    {
+                        col.Item().PaddingLeft(15).PaddingBottom(4)
+                           .Text("Nombre Profesional: James Johnson")
+                           .FontSize(9).AlignLeft();
+
+                        col.Item().PaddingLeft(15).PaddingBottom(4)
+                           .Text($"Fecha: {DateTime.Now:dd/MM/yyyy}")
+                           .FontSize(9).AlignLeft();
+
+                        col.Item().PaddingLeft(15)
+                           .Text($"Hora: {DateTime.Now:HH:mm}")
+                           .FontSize(9).AlignLeft();
+                    });
+
+                    row.RelativeItem(0.05f); // separador
+
+                    row.RelativeItem(0.35f).AlignMiddle().Column(col =>
+                    {
+                        col.Item()
+                           .Image(LogoBytes);
+
+                        col.Item().LineHorizontal(1);
+
+                        col.Item().Text("Firma del profesional")
+                                 .FontSize(9)
+                                 .AlignCenter();
+                    });
+                });
+
+                column.Item().PaddingTop(15);
+
+                column.Item().AlignCenter().Text(txt =>
+                {
+                    txt.Span("Medicy © ss -  Cuidamos tu salud · ").FontSize(10).Italic();
+                    txt.Span(DateTime.Now.ToString("HH:mm:ss")).FontSize(10);
+                });
+            });
+
+
         }
     }
 }
