@@ -26,8 +26,8 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 
 builder.Services.AddScoped<IChatBL, ChatBL>();
 builder.Services.AddScoped<IContactBL, ContactBL>();
-
 builder.Services.AddScoped<IPdfBL, PdfBL>();
+builder.Services.AddScoped<ISexoBL, SexoBL>();
 QuestPDF.Settings.License = LicenseType.Community;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
