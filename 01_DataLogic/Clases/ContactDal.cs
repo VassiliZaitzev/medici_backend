@@ -11,7 +11,8 @@ namespace _01_DataLogic.Clases
     {
         public async Task<int> AgregarContactoAsync(ContactEN c)
         {
-                int result = 0;
+            int result = 0;
+
             try
             {
                 var config = new ConfigurationBuilder()

@@ -36,6 +36,7 @@ builder.Services.AddScoped<IChatBL, ChatBL>();
 builder.Services.AddScoped<IContactBL, ContactBL>();
 builder.Services.AddScoped<IPdfBL, PdfBL>();
 builder.Services.AddScoped<ISexoBL, SexoBL>();
+builder.Services.AddScoped<IExamenBL, ExamenBL>();
 
 // Registro del DAL
 builder.Services.AddScoped<ContactDal>();
