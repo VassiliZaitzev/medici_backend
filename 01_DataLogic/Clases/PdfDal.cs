@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mysqlx.Cursor;
+using _00_Entities;
 
 namespace _01_DataLogic.Clases
 {
@@ -162,5 +163,8 @@ namespace _01_DataLogic.Clases
 
 
         }
+
+        
+
     }
 }

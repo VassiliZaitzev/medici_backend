@@ -21,5 +21,14 @@ namespace Medici.Controllers
         {
             return _IPdfBL.GenerarPdfClienteBase64();
         }
+
+        [HttpGet("EnviarDocumentoPDF")]
+        public async Task<IActionResult> EnviarDocumentoPDF()
+        {
+            await _IPdfBL.EnviarDocumentoPDF();
+            return Ok("Correo enviado con PDF adjunto (si el servicio soporta adjuntos).");
+        }
+
+
     }
 }

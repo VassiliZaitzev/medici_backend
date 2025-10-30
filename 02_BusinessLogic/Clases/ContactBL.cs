@@ -20,11 +20,8 @@ namespace _02_BusinessLogic.Clases
         }
 
         public async Task<int> AgregarContacto(ContactEN contacto)
-        {
-            // 1) Inserta en BD
+        {            
             var id = await _dal.AgregarContactoAsync(contacto);
-
-            // 2) Si insertó, envía correo (simple por ahora)
             if (id > 0)
             {
                 try
@@ -41,12 +38,10 @@ namespace _02_BusinessLogic.Clases
                         Saludos,
                         Equipo Medici
                         ";
-                    // Usa EmailService (envío HTML o texto; aquí enviamos como HTML simple)
                     await _emailService.SendEmailAsync(contacto.Email, subject, body.Replace("\n", "<br/>"));
                 }
                 catch (Exception ex)
                 {
-                    // No romper la creación si falla el mail, solo log
                     _logger.LogError(ex, "Error enviando email de confirmación para contacto {Id}", id);
                 }
             }

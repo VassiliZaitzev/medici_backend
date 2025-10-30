@@ -9,5 +9,7 @@ namespace _02_BusinessLogic.Interfaces
     public interface IEmailService
     {
         Task SendEmailAsync(string to, string subject, string body);
+        Task SendEmailWithAttachmentAsync(string to, string subject, string body, string attachmentName, string base64Attachment);
+
     }
 }

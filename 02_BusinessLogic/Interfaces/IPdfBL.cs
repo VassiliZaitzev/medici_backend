@@ -8,6 +8,7 @@ namespace _02_BusinessLogic.Interfaces
 {
     public interface IPdfBL
     {
-        public string GenerarPdfClienteBase64();
+        string GenerarPdfClienteBase64();
+        Task EnviarDocumentoPDF(); 
     }
 }
