@@ -15,4 +15,14 @@ namespace _00_Entities
         public int valor { get; set; }
         public int vigencia { get; set; }
     }
+
+    public class ExamenFonasaEN
+    {
+        public int examenCorr { get; set; }
+        public string codigo { get; set; }
+        public string glosa { get; set; }
+        public string codigoConcatenado { get; set; }
+        public int grupo { get; set; }
+
+    }
 }

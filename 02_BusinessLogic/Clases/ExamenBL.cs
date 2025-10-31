@@ -12,5 +12,11 @@ namespace _02_BusinessLogic.Clases
             ExamenDal oExamenDal = new ExamenDal();
             return await oExamenDal.obtenerExamenes();
         }
+
+        public async Task<List<ExamenFonasaEN>> obtenerExamenesFonasa()
+        {
+            ExamenDal oExamenDal = new ExamenDal();
+            return await oExamenDal.obtenerExamenesFonasa();
+        }
     }
 }

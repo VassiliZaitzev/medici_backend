@@ -5,5 +5,6 @@ namespace _02_BusinessLogic.Interfaces
     public interface IExamenBL
     {
         public Task<List<ExamenEN>> obtenerExamen();
+        public Task<List<ExamenFonasaEN>> obtenerExamenesFonasa();
     }
 }

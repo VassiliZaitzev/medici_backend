@@ -22,5 +22,12 @@ namespace Medici.Controllers
         {
             return _iexamenBL.obtenerExamen();
         }
+
+        [HttpGet("obtenerExamenesFonasa")]
+        public Task<List<ExamenFonasaEN>> obtenerExamenesFonasa()
+        {
+            return _iexamenBL.obtenerExamenesFonasa();
+        }
+    
     }
 }

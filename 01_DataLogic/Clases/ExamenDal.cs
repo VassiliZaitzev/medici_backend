@@ -47,5 +47,45 @@ namespace _01_DataLogic.Clases
 
             return examen;
         }
+
+
+        public async Task<List<ExamenFonasaEN>> obtenerExamenesFonasa()
+        {
+            List<ExamenFonasaEN> examen = [];
+            var config = new ConfigurationBuilder()
+             .AddJsonFile("appsettings.json")
+             .Build();
+
+            try
+            {
+                using var connection = new MySqlConnection(config["ConnectionStrings:medicyMySql"]);
+                await connection.OpenAsync();
+
+                using var command = new MySqlCommand("LISTAR_EXAMEN_FONASA", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                using var reader = await command.ExecuteReaderAsync();
+
+                examen = new List<ExamenFonasaEN>();
+                ExamenFonasaEN obj;
+                while (await reader.ReadAsync())
+                {
+                    obj = new ExamenFonasaEN();
+                    obj.examenCorr = reader.IsDBNull("EXAMEN_CORR") ? 0 : reader.GetInt32("EXAMEN_CORR");
+                    obj.codigo = reader.IsDBNull("CODIGO") ? null : reader.GetString("CODIGO");
+                    obj.glosa = reader.IsDBNull("GLOSA") ? null : reader.GetString("GLOSA");
+                    obj.codigoConcatenado = reader.IsDBNull("CODIGO_CONCATENADO") ? null : reader.GetString("CODIGO_CONCATENADO");
+                    obj.grupo = reader.IsDBNull("GRUPO") ? 0 : reader.GetInt32("GRUPO");
+                    examen.Add(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error :" + ex);
+
+            }
+
+            return examen;
+        }
     }
 }
