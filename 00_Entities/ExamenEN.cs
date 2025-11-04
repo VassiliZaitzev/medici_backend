@@ -25,4 +25,17 @@ namespace _00_Entities
         public int grupo { get; set; }
 
     }
+
+    public class ExamenFonasaRequestEN
+    {
+        public string tipo { get; set; }
+        public List<DetalleEN> detalles { get; set; }
+    }
+
+    public class DetalleEN
+    {
+        public string codigo { get; set; }
+        public string nombre { get; set; }
+        public string utilidad { get; set; }
+    }
 }

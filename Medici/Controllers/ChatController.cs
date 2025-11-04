@@ -27,5 +27,12 @@ namespace Medici.Controllers
         {
             return _chatBL.AgregarChat(chat);            
         }
+
+
+        [HttpPost("GuardarUsuarioExamen")]
+        public Task<int> GuardarUsuarioExamen([FromBody] ChatRequestEN request)
+        {
+            return _chatBL.GuardarUsuarioExamen(request);
+        }
     }
 }

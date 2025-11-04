@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace _01_DataLogic.Clases
@@ -101,6 +102,55 @@ namespace _01_DataLogic.Clases
                 command.Parameters.Add(outputParam);
 
    
+                await command.ExecuteNonQueryAsync();
+
+
+                var idChat = Convert.ToInt64(outputParam.Value);
+                result = (int)idChat;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error :" + ex);
+
+            }
+
+            return result;
+        }
+
+
+
+        public async Task<int> GuardarUsuarioExamen(string examen, int usuCorr, string codigo)
+        {
+            int result = 0;
+            var config = new ConfigurationBuilder()
+             .AddJsonFile("appsettings.json")
+             .Build();
+
+            try
+            {
+                
+
+                using var connection = new MySqlConnection(config["ConnectionStrings:medicyMySql"]);
+                await connection.OpenAsync();
+
+                using var command = new MySqlCommand("INSERTAR_USUARIO_EXAMEN", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+
+                command.Parameters.Add(new MySqlParameter("pUSUARIO_CORR", usuCorr));
+                command.Parameters.Add(new MySqlParameter("pCODIGO_USUARIO", codigo));
+                command.Parameters.Add(new MySqlParameter("pEXAMENES", examen));
+
+
+
+                var outputParam = new MySqlParameter("pUSUARIO_EX_CORR", MySqlDbType.Int64)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(outputParam);
+
+
                 await command.ExecuteNonQueryAsync();
 
 
