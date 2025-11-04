@@ -79,8 +79,8 @@ namespace _02_BusinessLogic.Clases
 
                 if (resp != "")
                 {
-                   // PdfBL oPdfBl = new PdfBL(emailService);
-                    //oPdfBl.EnviarDocumentoPDF(resp);
+                    PdfBL oPdfBl = new PdfBL();
+                    oPdfBl.EnviarDocumentoPDF(resp);
                 }
 
             }

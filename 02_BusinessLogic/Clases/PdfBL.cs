@@ -9,14 +9,10 @@ namespace _02_BusinessLogic.Clases
 {
     public class PdfBL : IPdfBL
     {
-        private readonly IEmailService _emailService;
-
-        public PdfBL(IEmailService emailService)
-        {
-            _emailService = emailService;
-        }
+        
         public async Task EnviarDocumentoPDF(string pdfBase64)
         {
+            EmailService emailService = new EmailService();
             try
             {
                 var subject = "Orden de Examen Medicy";
@@ -101,7 +97,7 @@ namespace _02_BusinessLogic.Clases
                 </body>
                 </html>";
 
-                await _emailService.SendEmailWithAttachmentAsync(
+                await emailService.SendEmailWithAttachmentAsync(
                     "byj.johnson@gmail.com",
                     subject,
                     body,
