@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _00_Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace _02_BusinessLogic.Interfaces
 {
     public interface IPdfBL
     {
-        string GenerarPdfClienteBase64();
-        Task EnviarDocumentoPDF(); 
+        Task<UsuarioExamenEN> ObtenerDatosExamenCodigo(int codigo);
+        string GenerarPdfClienteBase64(UsuarioExamenEN examen);
     }
 }

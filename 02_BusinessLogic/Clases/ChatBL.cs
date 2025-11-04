@@ -32,11 +32,13 @@ namespace _02_BusinessLogic.Clases
         }*/
 
 
-        public async Task<int> GuardarUsuarioExamen(ChatRequestEN request)
+        public async Task<string> GuardarUsuarioExamen(ChatRequestEN request)
         {
             ChatDal oChatDal = new ChatDal();
             UsuarioDAL oUsuarioDal = new UsuarioDAL();
-
+            PdfDal oPdfDal = new PdfDal();
+            
+            string resp = "";
             try
             {
                 foreach (var item in request.chat)
@@ -45,24 +47,48 @@ namespace _02_BusinessLogic.Clases
 
                     if (agregado <= 0)
                     {
-                        return 0;
+                        return "se cae al AgregarChat";
                     }
                 }
 
                 int usuarioCorr = await oUsuarioDal.AgregarUsuario(request.usuario);
                 if (usuarioCorr <= 0)
                 {
-                    return 0;
+                    resp = "Se cae al agregar usuario";
+                    return resp;
                 }
 
                 int GuardarUsuarioExamen = await oChatDal.GuardarUsuarioExamen(JsonSerializer.Serialize(request.examenFonasa), usuarioCorr, request.usuario.chatGptKey);
-                
+
+                if (GuardarUsuarioExamen <= 0)
+                {
+                    resp = "Se cae al guardar el examen";
+                    return resp;
+                }
+
+                UsuarioExamenEN datosUsuario = await oPdfDal.ObtenerDatosExamenCodigo(GuardarUsuarioExamen);
+
+                if (datosUsuario == null)
+                {
+                    resp = "Se cae al ObtenerDatosExamenCodigo";
+                    return resp;
+                }
+
+
+                resp = oPdfDal.GenerarPdfClienteBase64(datosUsuario);
+
+                if (resp != "")
+                {
+                   // PdfBL oPdfBl = new PdfBL(emailService);
+                    //oPdfBl.EnviarDocumentoPDF(resp);
+                }
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine("error :" + ex);
             }
-            return 1;
+            return resp;
         }
     }
 }

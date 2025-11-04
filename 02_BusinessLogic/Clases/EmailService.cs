@@ -13,6 +13,10 @@ namespace _01_DataLogic.Clases
     {
         private readonly SmtpSettings _smtpSettings;
 
+        public EmailService()
+        {
+        }
+
         public EmailService(IOptions<SmtpSettings> smtpSettings)
         {
             _smtpSettings = smtpSettings.Value;

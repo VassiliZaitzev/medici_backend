@@ -30,7 +30,7 @@ namespace Medici.Controllers
 
 
         [HttpPost("GuardarUsuarioExamen")]
-        public Task<int> GuardarUsuarioExamen([FromBody] ChatRequestEN request)
+        public Task<string> GuardarUsuarioExamen([FromBody] ChatRequestEN request)
         {
             return _chatBL.GuardarUsuarioExamen(request);
         }

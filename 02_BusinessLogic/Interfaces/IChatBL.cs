@@ -11,6 +11,6 @@ namespace _02_BusinessLogic.Interfaces
     {
         public Task<List<ChatEN>> ListarChat(string codigo);
         public Task<int> AgregarChat(ChatEN chat);
-        public Task<int> GuardarUsuarioExamen(ChatRequestEN request);
+        public Task<string> GuardarUsuarioExamen(ChatRequestEN request);
     }
 }

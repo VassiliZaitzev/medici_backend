@@ -154,8 +154,8 @@ namespace _01_DataLogic.Clases
                 await command.ExecuteNonQueryAsync();
 
 
-                var idChat = Convert.ToInt64(outputParam.Value);
-                result = (int)idChat;
+                var usuarioExamen = Convert.ToInt64(outputParam.Value);
+                result = (int)usuarioExamen;
 
             }
             catch (Exception ex)

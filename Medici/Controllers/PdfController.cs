@@ -2,6 +2,7 @@
 using _02_BusinessLogic.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static QuestPDF.Helpers.Colors;
 
 namespace Medici.Controllers
 {
@@ -16,17 +17,16 @@ namespace Medici.Controllers
             _IPdfBL = IPdfBL;
         }
 
-        [HttpGet("ObtenerDocumento")]
-        public string GenerarPdfClienteBase64()
+        [HttpGet("ObtenerDatosExamenCodigo")]
+        public Task<UsuarioExamenEN> ObtenerDatosExamenCodigo(int codigo)
         {
-            return _IPdfBL.GenerarPdfClienteBase64();
+            return _IPdfBL.ObtenerDatosExamenCodigo(codigo);
         }
 
-        [HttpGet("EnviarDocumentoPDF")]
-        public async Task<IActionResult> EnviarDocumentoPDF()
+        [HttpPost("GenerarPdfClienteBase64")]
+        public string GenerarPdfClienteBase64([FromBody] UsuarioExamenEN examen)
         {
-            await _IPdfBL.EnviarDocumentoPDF();
-            return Ok("Correo enviado con PDF adjunto (si el servicio soporta adjuntos).");
+            return _IPdfBL.GenerarPdfClienteBase64(examen);
         }
 
 
