@@ -20,25 +20,100 @@ namespace _02_BusinessLogic.Clases
         }
 
         public async Task<int> AgregarContacto(ContactEN contacto)
-        {            
+        {
             var id = await _dal.AgregarContactoAsync(contacto);
+
             if (id > 0)
             {
                 try
                 {
                     var subject = "Hemos recibido tu consulta";
+
                     var body = $@"
-                        Hola {contacto.Nombre},
+                                <html>
+                                <head>
+                                    <style>
+                                        body {{
+                                            font-family: 'Segoe UI', Arial, sans-serif;
+                                            background-color: #f7f9f8;
+                                            margin: 0;
+                                            padding: 0;
+                                        }}
+                                        .container {{
+                                            max-width: 600px;
+                                            margin: 30px auto;
+                                            background-color: #ffffff;
+                                            border-radius: 10px;
+                                            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+                                            overflow: hidden;
+                                        }}
+                                        .header {{
+                                            background-color: #00897b;
+                                            color: white;
+                                            text-align: center;
+                                            padding: 20px 10px;
+                                        }}
+                                        .header h1 {{
+                                            margin: 0;
+                                            font-size: 22px;
+                                        }}
+                                        .content {{
+                                            padding: 25px 30px;
+                                            color: #333333;
+                                            line-height: 1.6;
+                                        }}
+                                        .content p {{
+                                            margin-bottom: 15px;
+                                        }}
+                                        .highlight {{
+                                            background-color: #e0f2f1;
+                                            padding: 12px 18px;
+                                            border-left: 4px solid #00897b;
+                                            border-radius: 6px;
+                                            font-size: 14px;
+                                        }}
+                                        .footer {{
+                                            text-align: center;
+                                            font-size: 13px;
+                                            color: #888888;
+                                            padding: 15px;
+                                            background-color: #f0f0f0;
+                                        }}
+                                        .footer a {{
+                                            color: #00897b;
+                                            text-decoration: none;
+                                        }}
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class='container'>
+                                        <div class='header'>
+                                            <h1>Hemos recibido tu consulta</h1>
+                                        </div>
 
-                        Hemos recibido tu consulta y la estamos revisando.
-                        Tu código de seguimiento es: {id}.
+                                        <div class='content'>
+                                            <p>Hola {contacto.Nombre},</p>
 
-                        Te responderemos a esta misma dirección.
+                                            <p>Hemos recibido tu consulta y la estamos revisando.</p>
 
-                        Saludos,
-                        Equipo Medici
-                        ";
-                    await _emailService.SendEmailAsync(contacto.Email, subject, body.Replace("\n", "<br/>"));
+                                            <div class='highlight'>
+                                                Tu código de seguimiento es: <strong>{id}</strong>.
+                                            </div>
+
+                                            <p>Te responderemos a esta misma dirección.</p>
+
+                                            <p>Saludos,<br/>Equipo Medicy</p>
+                                        </div>
+
+                                        <div class='footer'>
+                                            © 2025 Medicy · Todos los derechos reservados<br/>
+                                            <a href='mailto:contacto@medicy.cl'>contacto@medicy.cl</a> | <a href='https://www.medicy.cl'>www.medicy.cl</a>
+                                        </div>
+                                    </div>
+                                </body>
+                                </html>";
+
+                    await _emailService.SendEmailAsync(contacto.Email, subject, body);
                 }
                 catch (Exception ex)
                 {
@@ -48,5 +123,6 @@ namespace _02_BusinessLogic.Clases
 
             return id;
         }
+
     }
 }
