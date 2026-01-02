@@ -1,6 +1,7 @@
 ﻿using _00_Entities;
 using _01_DataLogic.Clases;
 using _02_BusinessLogic.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,6 +84,38 @@ namespace _02_BusinessLogic.Clases
                     oPdfBl.EnviarDocumentoPDF(resp);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error :" + ex);
+            }
+            return resp;
+        }
+
+        public async Task<string> GptEnviarMensaje(string mensaje)
+        {
+            string resp = "";
+            try
+            {
+
+                HttpClient _httpClient = new HttpClient();
+                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+                string fullUrl = config["ChatGepesito:urlGpt"];
+                var json = new
+                {
+                    model = "gpt-4o-mini",
+                    messages = new[]
+                    {
+                        new { role = "user", content = mensaje }
+                    },
+                    max_tokens = 300
+                };
+
+                var contentUrl = new StringContent(JsonSerializer.Serialize(json), Encoding.UTF8, "application/json");
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", config["ChatGepesito:apiKey"]);
+                var responseToken = await _httpClient.PostAsync(fullUrl, contentUrl);
+                resp = await responseToken.Content.ReadAsStringAsync();
             }
             catch (Exception ex)
             {

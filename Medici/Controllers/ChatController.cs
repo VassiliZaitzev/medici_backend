@@ -34,5 +34,11 @@ namespace Medici.Controllers
         {
             return _chatBL.GuardarUsuarioExamen(request);
         }
+
+        [HttpGet("GptEnviarMensaje/{mensaje}")]
+        public Task<string> GptEnviarMensaje(string mensaje)
+        {
+            return _chatBL.GptEnviarMensaje(mensaje);
+        }
     }
 }
