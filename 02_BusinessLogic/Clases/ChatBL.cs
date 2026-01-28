@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace _02_BusinessLogic.Clases
 {
     public class ChatBL : IChatBL
     {
+
+        private static readonly HttpClient _httpClient = new HttpClient();
         public async Task<List<ChatEN>> ListarChat(string codigo)
         {
             ChatDal oChatDal = new ChatDal();
@@ -123,5 +126,54 @@ namespace _02_BusinessLogic.Clases
             }
             return resp;
         }
+
+
+        /*
+        public async Task<string> GptEnviarMensaje(string mensaje)
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            string fullUrl = config["ChatGepesito:urlGpt"];
+
+            var json = new
+            {
+                model = "gpt-4o-mini",
+                messages = new[]
+                {
+            new { role = "user", content = mensaje }
+        },
+                max_tokens = 150
+            };
+
+            var contentUrl = new StringContent(
+                JsonSerializer.Serialize(json),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", config["ChatGepesito:apiKey"]);
+
+            for (int intento = 1; intento <= 3; intento++)
+            {
+                var response = await _httpClient.PostAsync(fullUrl, contentUrl);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                {
+                    await Task.Delay(2000 * intento); // backoff exponencial
+                    continue;
+                }
+
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }
+
+            throw new Exception("Rate limit excedido tras varios intentos");
+        }
+
+        */
+
     }
 }

@@ -32,20 +32,21 @@ namespace Medici.Controllers
             var preference = new PreferenceRequest
             {
                 Items = new List<PreferenceItemRequest>
-            {
-                new()
                 {
-                    Title = "Consulta médica demo",
-                    Quantity = 1,
-                    CurrencyId = "CLP",
-                    UnitPrice = 1000
-                }
-            },
+                    new()
+                    {
+                        Title = "Consulta médica demo",
+                        Quantity = 1,
+                        CurrencyId = "CLP",
+                        UnitPrice = 1000
+                    }
+                },
                 BackUrls = new PreferenceBackUrlsRequest
                 {
-                    Success = "http://localhost:4200/success",
-                    Failure = "http://localhost:4200/failure"
+                    Success = "www.google.cl",
+                    Failure = "www.google.cl"
                 },
+                NotificationUrl = "https://duodenary-viceregally-gabriel.ngrok-free.dev/api/Pago/webhook",
                 AutoReturn = "approved"
             };
 
@@ -55,47 +56,55 @@ namespace Medici.Controllers
             return Ok(new { url = result.InitPoint, preferenceId = result.Id });
         }
 
-        // 2️⃣ Webhook para recibir notificaciones de pago
         [HttpPost("webhook")]
-        public async Task<IActionResult> Webhook([FromBody] JsonElement data)
+        public async Task<IActionResult> Webhook([FromBody] JsonElement body)
         {
             try
             {
-                // 2a️⃣ Obtener payment_id del webhook
-                if (!data.TryGetProperty("data", out var dataProperty) ||
-                    !dataProperty.TryGetProperty("id", out var idProperty))
+                if (!body.TryGetProperty("data", out var data) ||
+                    !data.TryGetProperty("id", out var idProp))
                 {
-                    return BadRequest("payment_id no encontrado en webhook");
+                    return BadRequest("payment_id no encontrado");
                 }
 
-                int paymentId = idProperty.GetInt32();
+                // 🔑 id puede venir como string o number
+                string paymentIdStr = idProp.ValueKind switch
+                {
+                    JsonValueKind.String => idProp.GetString(),
+                    JsonValueKind.Number => idProp.GetInt64().ToString(),
+                    _ => null
+                };
+
+                if (!int.TryParse(paymentIdStr, out int paymentId))
+                    return BadRequest("payment_id inválido");
+
                 Console.WriteLine($"Webhook recibido, PaymentId: {paymentId}");
 
-                // 2b️⃣ Validar pago real con Mercado Pago (PASO 3)
                 MercadoPagoConfig.AccessToken = _config["MercadoPago:AccessToken"];
+
                 var paymentClient = new PaymentClient();
                 Payment payment = await paymentClient.GetAsync(paymentId);
 
-                // 2c️⃣ Actualizar "BD" simulada
                 if (payment.Status == "approved")
                 {
                     _pagos[paymentId] = "APROBADO";
-                    Console.WriteLine($"Pago aprobado! PaymentId: {paymentId}");
+                    Console.WriteLine($"Pago aprobado! {paymentId}");
                 }
                 else
                 {
                     _pagos[paymentId] = payment.Status;
-                    Console.WriteLine($"Pago no aprobado. Estado: {payment.Status}");
+                    Console.WriteLine($"Pago estado: {payment.Status}");
                 }
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error Webhook: " + ex.Message);
-                return BadRequest(ex.Message);
+                Console.WriteLine("Error Webhook: " + ex);
+                return Ok(); // ⚠️ SIEMPRE 200 para que MP no reintente
             }
         }
+
 
         // 3️⃣ Endpoint opcional para consultar estado de pago
         [HttpGet("estado/{paymentId}")]
