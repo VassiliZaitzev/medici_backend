@@ -14,4 +14,10 @@ namespace _00_Entities
         public int? idTipoMensaje { get; set; }
         public DateTime? fecha { get; set; }
     }
+
+
+    public class ChatRequest
+    {
+        public string Mensaje { get; set; }
+    }
 }

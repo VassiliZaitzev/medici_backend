@@ -9,8 +9,8 @@ namespace _02_BusinessLogic.Clases
 {
     public class PdfBL : IPdfBL
     {
-        
-        public async Task EnviarDocumentoPDF(string pdfBase64)
+
+        public async Task EnviarDocumentoPDF(string toEmail, string pdfBase64)
         {
             EmailService emailService = new EmailService();
             try
@@ -91,14 +91,14 @@ namespace _02_BusinessLogic.Clases
                         </div>
                         <div class='footer'>
                             © 2025 Medicy · Todos los derechos reservados<br/>
-                            <a href='mailto:contacto@medici.cl'>contacto@medici.cl</a> | <a href='https://www.medici.cl'>www.medici.cl</a>
+                            <a href='mailto:contacto@medicy.cl'>contacto@medicy.cl</a> | <a href='https://www.medicy.cl'>www.medicy.cl</a>
                         </div>
                     </div>
                 </body>
                 </html>";
 
                 await emailService.SendEmailWithAttachmentAsync(
-                    "byj.johnson@gmail.com",
+                    toEmail,
                     subject,
                     body,
                     "OrdenExamen.pdf",

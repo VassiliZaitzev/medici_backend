@@ -81,10 +81,20 @@ namespace _02_BusinessLogic.Clases
 
                 resp = oPdfDal.GenerarPdfClienteBase64(datosUsuario);
 
-                if (resp != "")
+                if (!string.IsNullOrWhiteSpace(resp))
                 {
-                    PdfBL oPdfBl = new PdfBL();
-                    oPdfBl.EnviarDocumentoPDF(resp);
+                    // ✅ AQUÍ EL CAMBIO: mandar al correo del paciente
+                    var correoDestino = datosUsuario.email; // o request.usuario.email
+
+                    if (!string.IsNullOrWhiteSpace(correoDestino))
+                    {
+                        PdfBL oPdfBl = new PdfBL();
+                        await oPdfBl.EnviarDocumentoPDF(correoDestino, resp);
+                    }
+                    else
+                    {
+                        Console.WriteLine("⚠️ No se envió correo: email destino vacío.");
+                    }
                 }
 
             }
@@ -107,12 +117,20 @@ namespace _02_BusinessLogic.Clases
                 string fullUrl = config["ChatGepesito:urlGpt"];
                 var json = new
                 {
-                    model = "gpt-4o-mini",
+                    //model = "gpt-4o-mini",
+                    //messages = new[]
+                    //{
+                    //    new { role = "user", content = mensaje }
+                    //},
+                    //max_tokens = 300
+
+
+
+                    model = "gpt-5-nano",
                     messages = new[]
                     {
                         new { role = "user", content = mensaje }
-                    },
-                    max_tokens = 300
+                    }
                 };
 
                 var contentUrl = new StringContent(JsonSerializer.Serialize(json), Encoding.UTF8, "application/json");
