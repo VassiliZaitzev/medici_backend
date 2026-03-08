@@ -16,10 +16,9 @@ namespace Medici.Controllers
         private readonly IConfiguration _config;
         private readonly IChatBL _chatBL;
 
-        // Simulación de BD en memoria (estado pagos)
         private static Dictionary<long, string> _pagos = new();
-
         private static Dictionary<string, ChatRequestEN> _ordenes = new();
+        private static Dictionary<long, string> _pdfs = new();
 
         public PagoController(IConfiguration config, IChatBL chatBL)
         {
@@ -77,7 +76,6 @@ namespace Medici.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
-
         [HttpPost("webhook")]
         public async Task<IActionResult> Webhook([FromBody] JsonElement body)
         {
@@ -103,16 +101,33 @@ namespace Medici.Controllers
 
                     if (!string.IsNullOrWhiteSpace(chatKey) && _ordenes.TryGetValue(chatKey, out var orden))
                     {
-                        await _chatBL.GuardarUsuarioExamen(orden);
+                        Console.WriteLine($"\n[WEBHOOK] ⚙️ Procesando orden para el pago {paymentId}...");
+
+                        string base64Pdf = await _chatBL.GuardarUsuarioExamen(orden);
+
+                        if (!string.IsNullOrWhiteSpace(base64Pdf) && base64Pdf.Length > 100)
+                        {
+                            _pdfs[paymentId] = base64Pdf;
+                            Console.WriteLine($"[WEBHOOK] ✅ PDF GUARDADO EN MEMORIA EXITOSAMENTE PARA EL PAGO {paymentId}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[WEBHOOK] ❌ ERROR: El string vino vacío o devolvió error: {base64Pdf}");
+                        }
 
                         _ordenes.Remove(chatKey);
+                    }
+                    else if (_pdfs.ContainsKey(paymentId))
+                    {
+                        Console.WriteLine($"[WEBHOOK] ⚠️ Evento duplicado. El PDF {paymentId} ya estaba guardado.");
                     }
                 }
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"[WEBHOOK] 💥 Error crítico: {ex.Message}");
                 return Ok();
             }
         }
@@ -138,6 +153,44 @@ namespace Medici.Controllers
         public IActionResult FailureBridge()
         {
             return Redirect("http://localhost:4200/pagos/failure" + Request.QueryString.Value);
+        }
+
+        [HttpGet("descargar-pdf/{paymentId}")]
+        public IActionResult DescargarPdf(long paymentId)
+        {
+            Console.WriteLine($"\n[FRONTEND] 🔍 Angular está buscando el PDF del pago {paymentId}...");
+
+            if (_pdfs.TryGetValue(paymentId, out var base64))
+            {
+                Console.WriteLine($"[FRONTEND] ✅ PDF ENCONTRADO! Enviando a Angular...");
+                return Ok(new { base64 = base64 });
+            }
+
+            Console.WriteLine($"[FRONTEND] ❌ PDF NO ENCONTRADO. (¿Se reinició el backend o aún no termina el Webhook?)");
+            return NotFound(new { mensaje = "El PDF no se encontró o aún se está generando." });
+        }
+        [HttpPost("ReenviarPdf")]
+        public async Task<IActionResult> ReenviarPdf([FromBody] ReenviarPdfRequest request)
+        {
+            try
+            {
+                if (_pdfs.TryGetValue(request.PaymentId, out var base64Pdf))
+                {
+                    _02_BusinessLogic.Clases.PdfBL oPdfBl = new _02_BusinessLogic.Clases.PdfBL();
+                    await oPdfBl.EnviarDocumentoPDF(request.Email, base64Pdf);
+
+                    Console.WriteLine($"[REENVÍO] ✅ PDF reenviado con éxito al correo: {request.Email}");
+                    return Ok(new { mensaje = "PDF reenviado correctamente." });
+                }
+
+                Console.WriteLine($"[REENVÍO] ❌ No se encontró el PDF en memoria para el pago {request.PaymentId}");
+                return NotFound(new { mensaje = "El PDF ya no está disponible en memoria. Por favor, contacte a soporte." });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[REENVÍO] 💥 Error al reenviar: {ex.Message}");
+                return StatusCode(500, new { mensaje = "Error interno al reenviar el PDF." });
+            }
         }
     }
 }
