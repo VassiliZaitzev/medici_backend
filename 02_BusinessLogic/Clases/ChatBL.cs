@@ -145,6 +145,44 @@ namespace _02_BusinessLogic.Clases
             return resp;
         }
 
+        public async Task<string> ClaudeEnviarMensajeV2(string mensaje)
+        {
+            string resp = "";
+            try
+            {
+                HttpClient _httpClient = new HttpClient();
+                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+                // Leemos la configuración específica de Claude
+                string fullUrl = config["ClaudeAPI:urlGpt"];
+
+                var json = new
+                {
+                    // Claude 3 Haiku es súper rápido y económico. También puedes usar "claude-3-5-sonnet-20241022"
+                    model = "claude-3-haiku-20240307",
+                    max_tokens = 1024, // Claude exige que le digas el límite de tokens
+                    messages = new[]
+                    {
+                        new { role = "user", content = mensaje }
+                    }
+                };
+
+                var contentUrl = new StringContent(JsonSerializer.Serialize(json), Encoding.UTF8, "application/json");
+
+                // Los Headers de Claude son distintos a los de OpenAI
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Add("x-api-key", config["ClaudeAPI:apiKey"]);
+                _httpClient.DefaultRequestHeaders.Add("anthropic-version", config["ClaudeAPI:anthropicVersion"]);
+
+                var responseToken = await _httpClient.PostAsync(fullUrl, contentUrl);
+                resp = await responseToken.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error en Claude V2: " + ex);
+            }
+            return resp;
+        }
 
         /*
         public async Task<string> GptEnviarMensaje(string mensaje)

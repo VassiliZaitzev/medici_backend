@@ -14,5 +14,9 @@ namespace _02_BusinessLogic.Interfaces
         public Task<string> GuardarUsuarioExamen(ChatRequestEN request);
 
         public Task<string> GptEnviarMensaje(string mensaje);
+
+
+        // 🔥 NUEVO: Método V2 (Claude)
+        public Task<string> ClaudeEnviarMensajeV2(string mensaje);
     }
 }

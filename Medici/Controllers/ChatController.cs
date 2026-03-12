@@ -46,5 +46,18 @@ namespace Medici.Controllers
         {
             return _chatBL.GptEnviarMensaje(chatRequest.Mensaje);
         }
+
+
+        [HttpGet("ClaudeEnviarMensajeV2/{mensaje}")]
+        public Task<string> ClaudeEnviarMensajeV2(string mensaje)
+        {
+            return _chatBL.ClaudeEnviarMensajeV2(mensaje);
+        }
+
+        [HttpPost("ClaudeEnviarBigMensajeV2")]
+        public Task<string> ClaudeEnviarBigMensajeV2([FromBody] ChatRequest chatRequest)
+        {
+            return _chatBL.ClaudeEnviarMensajeV2(chatRequest.Mensaje);
+        }
     }
 }
