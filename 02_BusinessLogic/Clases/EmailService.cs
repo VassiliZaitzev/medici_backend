@@ -24,6 +24,8 @@ namespace _01_DataLogic.Clases
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(config["SmtpSettings:FromName"], config["SmtpSettings:FromEmail"]));
             message.To.Add(MailboxAddress.Parse(to));
+
+            //message.Cc.Add(MailboxAddress.Parse("contacto@medicy.cl"));
             message.Subject = subject;
 
             message.Body = new TextPart("html")
