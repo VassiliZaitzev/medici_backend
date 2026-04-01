@@ -22,8 +22,7 @@ namespace _02_BusinessLogic.Clases
 
         public async Task<int> AgregarContacto(ContactEN contacto)
         {
-            //var id = await _dal.AgregarContactoAsync(contacto);
-            var id = 1;
+            var id = await _dal.AgregarContactoAsync(contacto);
             if (id > 0)
             {
                 try
